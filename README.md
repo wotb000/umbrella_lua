@@ -1,1 +1,2 @@
-Lua scripts for Umbrella DotA2
+# Lua scripts for Umbrella (uc.zone)
+
