@@ -50,7 +50,8 @@ local TrashtalkG = tab:Create("Main"):Create("Trashtalk")
 ui.global_switch = TrashtalkG:Switch("Enable", false, "\u{f00c}")
 ui.trashtalk = TrashtalkG:Switch("TrashTalk", false, "\u{f619}")
 ui.trashtalkS = TrashtalkG:MultiCombo("Type", {"Мелонити юзеры", "Пендосам"}, {})
-ui.trashtalkbind = TrashtalkG:Bind("TrashTalk bind", Enum.ButtonCode.KEY_NONE, "\u{e1c0}")
+ui.trashtalkTeam = TrashtalkG:Switch("In teamchat", false, "\u{f63d}")
+ui.trashtalkbind = TrashtalkG:Bind("Bind", Enum.ButtonCode.KEY_NONE, "\u{e1c0}")
 
 local MMapG = tab:Create("Main"):Create("MiniMap things...")
 ui.minimapdrawer = MMapG:Switch("MiniMap Drawer (indev)", false, "\u{e024}")
@@ -58,11 +59,12 @@ ui.minimapdrawer = MMapG:Switch("MiniMap Drawer (indev)", false, "\u{e024}")
 ui.global_switch:SetCallback(function ()
     ui.trashtalk:Disabled(not ui.global_switch:Get())
     ui.trashtalkS:Disabled(not ui.global_switch:Get())
+    ui.trashtalkTeam:Disabled(not ui.global_switch:Get())
     ui.trashtalkbind:Disabled(not ui.global_switch:Get())
     ui.minimapdrawer:Disabled(not ui.global_switch:Get())
 end, true)
 
-local function trashtalk(entity)
+local function trashtalk()
     if not ui.trashtalk:Get() then return end
     
     local isSenSelected = ui.trashtalkS:Get("Мелонити юзеры")
@@ -88,7 +90,11 @@ local function trashtalk(entity)
     local chatmsg = chatList[chatmsgindex]
     
     if ui.trashtalkbind:IsPressed() then
-        return { Engine.ExecuteCommand("say \"" .. chatmsg .. "\"") }
+        if ui.trashtalkTeam:Get() then
+            return { Engine.ExecuteCommand("say_team \"" .. chatmsg .. "\"") }
+        else
+            return { Engine.ExecuteCommand("say \"" .. chatmsg .. "\"") }
+        end
     end
 end
 
