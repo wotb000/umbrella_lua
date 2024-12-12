@@ -132,10 +132,9 @@ local govno = {
     "съебалось чудище тупое нах",
     "всосал дурик"
 }
-
 local ui = {}
 local killsay = {}
-local tab = Menu.Create("General", "Main", "") 
+local tab = Menu.Create("General", "Main", "[LUA] SA") 
 tab:Icon("\u{f6b6}")
 
 local TrashtalkG = tab:Create("Main"):Create("Trashtalk")
@@ -145,57 +144,70 @@ ui.trashtalk:ToolTip("бля пиздец ща дохуя тик ток дете
 ui.trashtalkS = TrashtalkG:MultiCombo("Type", {"Мелонити юзеры", "Пендосам", "Владислав твердит", "хз как назвать"}, {})
 ui.trashtalkTeam = TrashtalkG:Switch("In teamchat", false, "\u{f63d}")
 ui.trashtalkbind = TrashtalkG:Bind("Bind", Enum.ButtonCode.KEY_NONE, "\u{e1c0}")
+local label = TrashtalkG:Label("              t.me/missedduetospread\n                           dev build =)" );
 
-local MMapG = tab:Create("Main"):Create("MiniMap things...")
-ui.minimapdrawer = MMapG:Switch("MiniMap Drawer (indev)", false, "\u{e024}")
+local g2 = tab:Create("Main"):Create("$ Rjaka Manipulation $")
+ui.g2rjaka1 = g2:Switch("угарная надпись хз", false, "\u{e39b}" )
+ui.g2rjaka2 = g2:Bind("забинди", Enum.ButtonCode.KEY_NONE, "\u{e1c0}")
+
+local function govneco()
+    if not ui.g2rjaka1:Get() then return end
+    if ui.g2rjaka2:IsPressed() then
+    Notification {
+        id = "HUETA_PONOS",
+        duration = 3,
+        timer = 3,
+        hero = "npc_dota_hero_invoker",
+        primary_text = "НАЕБАЛОВО",
+        primary_image = Render.LoadImage("panorama/images/spellicons/invoker_sun_strike_png.vtex_c"),
+        secondary_image = "panorama/images/spellicons/invoker_sun_strike_png.vtex_c",
+        secondary_text = "\a{primary}Тут ничё нет, тебя наебали",
+        -- active = false,
+        position = Vector(-1280, 100, 100),
+        sound = "sounds/vo/marci/marci_sad.vsnd_c"
+      }
+    end
+end
 
 ui.global_switch:SetCallback(function ()
     ui.trashtalk:Disabled(not ui.global_switch:Get())
     ui.trashtalkS:Disabled(not ui.global_switch:Get())
     ui.trashtalkTeam:Disabled(not ui.global_switch:Get())
     ui.trashtalkbind:Disabled(not ui.global_switch:Get())
-    ui.minimapdrawer:Disabled(not ui.global_switch:Get())
+    ui.g2rjaka1:Disabled(not ui.g22:Get())
+    ui.g2rjaka2:Disabled(not ui.g22:Get())
 end, true)
 
 local function trashtalk()
     if not ui.trashtalk:Get() then return end
-    
     local isSenSelected = ui.trashtalkS:Get("Мелонити юзеры")
     local isSentestSelected = ui.trashtalkS:Get("Пендосам")
     local isRoflSelected = ui.trashtalkS:Get("Владислав твердит")
     local isHmSelected = ui.trashtalkS:Get("хз как назвать")
-    
     local chatList = {}
-    
     if isSenSelected then 
         for _, v in ipairs(minaev) do
             table.insert(chatList, v)
         end
     end
-    
     if isSentestSelected then 
         for _, v in ipairs(engtoxic) do
             table.insert(chatList, v)
         end
     end
-
     if isRoflSelected then 
         for _, v in ipairs(vladacid) do
             table.insert(chatList, v)
         end
     end
-
     if isHmSelected then 
         for _, v in ipairs(govno) do
             table.insert(chatList, v)
         end
     end
-    
     if #chatList == 0 then return end
-    
     local chatmsgindex = math.random(0, #chatList)
     local chatmsg = chatList[chatmsgindex]
-    
     if ui.trashtalkbind:IsPressed() then
         if ui.trashtalkTeam:Get() then
             return { Engine.ExecuteCommand("say_team \"" .. chatmsg .. "\"") }
@@ -206,12 +218,10 @@ local function trashtalk()
 end
 
 killsay.OnUpdate = function ()
-
     if not ui.global_switch:Get() then
         return
     end
-
     if trashtalk() then return end
+    if govneco() then return end
 end
-
 return killsay
