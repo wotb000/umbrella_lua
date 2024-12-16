@@ -134,7 +134,7 @@ local govno = {
 }
 local ui = {}
 local killsay = {}
-local tab = Menu.Create("General", "Main", "[LUA] SA") 
+local tab = Menu.Create("General", "LUA", "Sexual Abuse") 
 tab:Icon("\u{f6b6}")
 
 local TrashtalkG = tab:Create("Main"):Create("Trashtalk")
@@ -149,6 +149,7 @@ local label = TrashtalkG:Label("              t.me/missedduetospread\n          
 local g2 = tab:Create("Main"):Create("$ Rjaka Manipulation $")
 ui.g2rjaka1 = g2:Switch("угарная надпись хз", false, "\u{e39b}" )
 ui.g2rjaka2 = g2:Bind("забинди", Enum.ButtonCode.KEY_NONE, "\u{e1c0}")
+ui.bodyguardMarci = g2:Switch("Auto Bodyguard", false, "\u{f06e}")
 
 local function govneco()
     if not ui.g2rjaka1:Get() then return end
@@ -176,6 +177,7 @@ ui.global_switch:SetCallback(function ()
     ui.trashtalkbind:Disabled(not ui.global_switch:Get())
     ui.g2rjaka1:Disabled(not ui.g22:Get())
     ui.g2rjaka2:Disabled(not ui.g22:Get())
+    ui.bodyguardMarci:Disabled(not ui.g22:Get())
 end, true)
 
 local function trashtalk()
